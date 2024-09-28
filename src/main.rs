@@ -2,7 +2,7 @@ pub mod http;
 
 use std::sync::Arc;
 
-use clap::{command, error, Parser};
+use clap::{command, Parser};
 use env_logger::Env;
 use log::{debug, error, warn};
 use socks5_server::{
