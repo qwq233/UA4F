@@ -41,6 +41,11 @@ pub fn modify_user_agent(buf: &mut Vec<u8>, user_agent: &String) {
     const TARGET: &[u8; 12] = b"User-Agent: ";
 
     while pos < len {
+        if pos + TARGET.len() >= len {
+            error!("User-Agent not found, end of buffer");
+            return;
+            
+        }
         if buf[pos..pos + TARGET.len()] == *TARGET {
             start = pos;
             break;
@@ -53,6 +58,10 @@ pub fn modify_user_agent(buf: &mut Vec<u8>, user_agent: &String) {
     }
 
     while pos < len {
+        if pos + 1 >= len {
+            error!("User-Agent not found, end of buffer");
+            return;
+        }
         if buf[pos] == b'\r' && buf[pos + 1] == b'\n' {
             end = pos;
             break;
