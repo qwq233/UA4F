@@ -2,7 +2,7 @@ pub mod http;
 
 use std::sync::Arc;
 
-use clap::{command, Parser};
+use clap::{command, error, Parser};
 use env_logger::Env;
 use log::{debug, error, warn};
 use socks5_server::{
@@ -132,6 +132,7 @@ async fn handler(conn: IncomingConnection<(), NeedAuthenticate>) -> Result<(), E
                     let mut conn = match replied {
                         Ok(conn) => conn,
                         Err((err, mut conn)) => {
+                            error!("reply failed: {}", err);
                             let _ = conn.shutdown().await;
                             return Err(Error::Io(err));
                         }
@@ -143,6 +144,8 @@ async fn handler(conn: IncomingConnection<(), NeedAuthenticate>) -> Result<(), E
                         Err(err) => {
                             let _ = conn.shutdown().await;
                             let _ = target.shutdown().await;
+
+                            error!("read failed: {}", err);
                             return Err(Error::Io(err));
                         }
                     };
