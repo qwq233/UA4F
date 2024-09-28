@@ -27,7 +27,7 @@ struct Args {
 
     #[arg(
         short('f'),
-        long("user-agent"), 
+        long("user-agent"),
         default_value = "Mozilla/5.0 (Window NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/555.66"
     )]
     user_agent: String,
@@ -140,7 +140,7 @@ async fn handler(conn: IncomingConnection<(), NeedAuthenticate>) -> Result<(), E
                         }
                     };
 
-                    let mut buf: Vec<u8> = vec![0; 8192];
+                    let mut buf: Vec<u8> = vec![0; 8];
                     let n = match conn.read(&mut buf).await {
                         Ok(n) => n,
                         Err(err) => {
@@ -161,6 +161,24 @@ async fn handler(conn: IncomingConnection<(), NeedAuthenticate>) -> Result<(), E
                     debug!("is_http: {}", is_http);
                     if is_http {
                         let user_agent = unsafe { USERAGENT.as_ref().unwrap() };
+
+                        let mut buf: Vec<u8> = vec![0; 1018];
+                        let n = match conn.read(&mut buf).await {
+                            Ok(n) => n,
+                            Err(err) => {
+                                let _ = conn.shutdown().await;
+                                let _ = target.shutdown().await;
+
+                                error!("read failed: {}", err);
+                                return Err(Error::Io(err));
+                            }
+                        };
+                        if n == 0 {
+                            let _ = conn.shutdown().await;
+                            let _ = target.shutdown().await;
+                            return Ok(());
+                        }
+
                         http::modify_user_agent(&mut buf, user_agent);
                     }
 
