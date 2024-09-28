@@ -76,6 +76,12 @@ pub fn modify_user_agent(buf: &mut Vec<u8>, user_agent: &String) {
     debug!("start: {}, end: {}", start, end);
     debug!("user_agent: {}", String::from_utf8_lossy(&buf[start..end]));
 
+    // MicroMessenger Client
+    if buf[start + 12..start + 12 + 21] == [77, 105, 99, 114, 111, 77, 101, 115, 115, 101, 110, 103, 101, 114, 32, 67, 108, 105, 101, 110, 116] {
+        debug!("WeChat UA found, skip");
+        return;
+    }
+
     buf.drain(start + 12..end - 1);
     let user_agent = user_agent.as_bytes();
     let mut len = user_agent.len();
