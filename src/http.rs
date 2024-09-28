@@ -80,6 +80,9 @@ pub fn modify_user_agent(buf: &mut Vec<u8>, user_agent: &String) {
     if buf[start + 12..start + 12 + 21] == [77, 105, 99, 114, 111, 77, 101, 115, 115, 101, 110, 103, 101, 114, 32, 67, 108, 105, 101, 110, 116] {
         debug!("WeChat UA found, skip");
         return;
+    } else if buf[start + 12..start + 12 + 8] == [66, 105, 108, 105, 98, 105, 108, 105] {
+        debug!("Bilibili UA, skip");
+        return;
     }
 
     buf.drain(start + 12..end - 1);
