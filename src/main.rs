@@ -138,7 +138,7 @@ async fn handler(conn: IncomingConnection<(), NeedAuthenticate>) -> Result<(), E
                         }
                     };
 
-                    let mut buf: Vec<u8> = vec![0; 4096];
+                    let mut buf: Vec<u8> = vec![0; 1024];
                     let n = match conn.read_exact(&mut buf).await {
                         Ok(n) => n,
                         Err(err) => {
