@@ -19,7 +19,7 @@ use tokio::{
 #[derive(Parser, Debug)]
 #[command(version, long_about = "")]
 struct Args {
-    #[arg(short, long, default_value = "0.0.0.0:1080")]
+    #[arg(short, long, default_value = "0.0.0.0")]
     bind: String,
 
     #[arg(short, long, default_value = "1080")]
