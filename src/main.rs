@@ -84,6 +84,7 @@ async fn handler(conn: IncomingConnection<(), NeedAuthenticate>) -> Result<(), E
     match conn.wait().await {
         // we don't support associate and bind command
         Ok(Command::Associate(associate, _)) => {
+            warn!("received associate command, reject");
             let replied = associate
                 .reply(Reply::CommandNotSupported, Address::unspecified())
                 .await;
@@ -99,6 +100,7 @@ async fn handler(conn: IncomingConnection<(), NeedAuthenticate>) -> Result<(), E
             let _ = conn.close().await;
         }
         Ok(Command::Bind(bind, _)) => {
+            warn!("received bind command, reject");
             let replied = bind
                 .reply(Reply::CommandNotSupported, Address::unspecified())
                 .await;
