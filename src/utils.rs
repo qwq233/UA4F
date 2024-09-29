@@ -16,12 +16,12 @@ pub fn init_logger(level: String) {
 
     let stdout = ConsoleAppender::builder()
         .encoder(Box::new(PatternEncoder::new(
-            "{d(%Y-%m-%d %H:%M:%S %Z)(utc)} [{h{l}}] - {m}{n}",
+            "{d(%Y-%m-%d %H:%M:%S %Z)(utc)} [{h({l})}] - {m}{n}",
         )))
         .build();
     let requests = FileAppender::builder()
         .encoder(Box::new(PatternEncoder::new(
-            "{d(%Y-%m-%d %H:%M:%S %Z)(utc)} [{h{l}}] - {m}{n}",
+            "{d(%Y-%m-%d %H:%M:%S %Z)(utc)} [{h({l})}] - {m}{n}",
         )))
         .build("/var/log/ua4f.log")
         .unwrap();
@@ -54,12 +54,12 @@ pub fn init_logger(level: String) {
 
     let stdout = ConsoleAppender::builder()
         .encoder(Box::new(PatternEncoder::new(
-            "{d(%Y-%m-%d %H:%M:%S %Z)(utc)} [{h{l}}] - {m}{n}",
+            "{d(%Y-%m-%d %H:%M:%S %Z)(utc)} [{h({l})}] - {m}{n}",
         )))
         .build();
     let requests = FileAppender::builder()
         .encoder(Box::new(PatternEncoder::new(
-            "{d(%Y-%m-%d %H:%M:%S %Z)(utc)} [{h{l}}] - {m}{n}",
+            "{d(%Y-%m-%d %H:%M:%S %Z)(utc)} [{h({l})}] - {m}{n}",
         )))
         .build("./log/ua4f.log")
         .unwrap();
