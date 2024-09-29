@@ -162,7 +162,7 @@ async fn handler(conn: IncomingConnection<(), NeedAuthenticate>) -> Result<(), E
                     if is_http {
                         let user_agent = unsafe { USERAGENT.as_ref().unwrap() };
 
-                        let mut buf: Vec<u8> = vec![0; 1018];
+                        let mut buf: Vec<u8> = vec![0; 4088];
                         let n = match conn.read(&mut buf).await {
                             Ok(n) => n,
                             Err(err) => {
