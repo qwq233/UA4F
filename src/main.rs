@@ -3,8 +3,8 @@ pub mod utils;
 
 use std::sync::Arc;
 
-use clap::{command, Parser};
-use log::{debug, error, warn};
+use clap::{command, ArgAction, Parser};
+use log::{debug, error, info, warn};
 use socks5_server::{
     auth::NoAuth,
     connection::state::NeedAuthenticate,
@@ -34,6 +34,9 @@ struct Args {
 
     #[arg(short('l'), long("log-level"), default_value = "info")]
     log_level: String,
+
+    #[arg(long("no-file-log"), action=ArgAction::SetFalse)]
+    no_file_log: bool,
 }
 
 fn main() {
@@ -45,7 +48,12 @@ static mut USERAGENT: Option<String> = None;
 
 #[tokio::main]
 async fn start_server(args: Args) {
-    utils::init_logger(args.log_level);
+    utils::init_logger(args.log_level, args.no_file_log);
+    info!("UA4F started");
+    info!("Author: {}", env!("CARGO_PKG_AUTHORS"));
+    info!("Version: {}", env!("CARGO_PKG_VERSION"));
+    info!("Listening on {}:{}", args.bind, args.port);
+
     unsafe {
         USERAGENT = Some(args.user_agent);
     }
