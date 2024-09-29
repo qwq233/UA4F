@@ -1,9 +1,9 @@
 pub mod http;
+pub mod utils;
 
 use std::sync::Arc;
 
 use clap::{command, Parser};
-use env_logger::Env;
 use log::{debug, error, warn};
 use socks5_server::{
     auth::NoAuth,
@@ -45,7 +45,7 @@ static mut USERAGENT: Option<String> = None;
 
 #[tokio::main]
 async fn start_server(args: Args) {
-    env_logger::Builder::from_env(Env::default().default_filter_or("info")).init();
+    utils::init_logger(args.log_level);
     unsafe {
         USERAGENT = Some(args.user_agent);
     }
