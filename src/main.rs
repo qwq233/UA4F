@@ -35,7 +35,7 @@ struct Args {
     #[arg(short('l'), long("log-level"), default_value = "info")]
     log_level: String,
 
-    #[arg(long("no-file-log"), action=ArgAction::SetFalse)]
+    #[arg(long("no-file-log"))]
     no_file_log: bool,
 }
 

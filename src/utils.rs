@@ -33,11 +33,18 @@ pub fn init_logger(level: String, no_file_log: bool) {
             .build(log_level)
     };
 
-    let config = Config::builder()
-        .appender(Appender::builder().build("stdout", Box::new(stdout)))
-        .appender(Appender::builder().build("logfile", Box::new(logfile)))
-        .build(root)
-        .unwrap();
+    let config = if no_file_log {
+        Config::builder()
+            .appender(Appender::builder().build("stdout", Box::new(stdout)))
+            .build(root)
+            .unwrap()
+    } else {
+        Config::builder()
+            .appender(Appender::builder().build("stdout", Box::new(stdout)))
+            .appender(Appender::builder().build("logfile", Box::new(logfile)))
+            .build(root)
+            .unwrap()
+    };
 
     log4rs::init_config(config).unwrap();
 }
@@ -69,11 +76,18 @@ pub fn init_logger(level: String, no_file_log: bool) {
             .build(log_level)
     };
 
-    let config = Config::builder()
-        .appender(Appender::builder().build("stdout", Box::new(stdout)))
-        .appender(Appender::builder().build("logfile", Box::new(logfile)))
-        .build(root)
-        .unwrap();
+    let config = if no_file_log {
+        Config::builder()
+            .appender(Appender::builder().build("stdout", Box::new(stdout)))
+            .build(root)
+            .unwrap()
+    } else {
+        Config::builder()
+            .appender(Appender::builder().build("stdout", Box::new(stdout)))
+            .appender(Appender::builder().build("logfile", Box::new(logfile)))
+            .build(root)
+            .unwrap()
+    };
 
     log4rs::init_config(config).unwrap();
 }
