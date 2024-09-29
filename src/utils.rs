@@ -23,7 +23,7 @@ pub fn init_logger(level: String) {
         .encoder(Box::new(PatternEncoder::new(
             "{d(%Y-%m-%d %H:%M:%S %Z)(utc)} [{h{l}}] - {m}{n}",
         )))
-        .build("./log/ua4f.log")
+        .build("/var/log/ua4f.log")
         .unwrap();
 
     let config = Config::builder()
