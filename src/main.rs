@@ -3,7 +3,7 @@ pub mod utils;
 
 use std::sync::Arc;
 
-use clap::{command, ArgAction, Parser};
+use clap::{command, Parser};
 use log::{debug, error, info, warn};
 use socks5_server::{
     auth::NoAuth,
