@@ -4,6 +4,8 @@ use log4rs::append::file::FileAppender;
 use log4rs::config::{Appender, Config, Logger, Root};
 use log4rs::encode::pattern::PatternEncoder;
 
+const PATTERN: &str = "{d(%Y-%m-%d %H:%M:%S %Z)(utc)} [{h({l})}] {M} - {m}{n}";
+
 #[cfg(target_os = "linux")]
 pub fn init_logger(level: String) {
     let log_level = match level.as_str() {
@@ -15,14 +17,10 @@ pub fn init_logger(level: String) {
     };
 
     let stdout = ConsoleAppender::builder()
-        .encoder(Box::new(PatternEncoder::new(
-            "{d(%Y-%m-%d %H:%M:%S %Z)(utc)} [{h({l})}] - {m}{n}",
-        )))
+        .encoder(Box::new(PatternEncoder::new(PATTERN)))
         .build();
     let requests = FileAppender::builder()
-        .encoder(Box::new(PatternEncoder::new(
-            "{d(%Y-%m-%d %H:%M:%S %Z)(utc)} [{h({l})}] - {m}{n}",
-        )))
+        .encoder(Box::new(PatternEncoder::new(PATTERN)))
         .build("/var/log/ua4f.log")
         .unwrap();
 
@@ -53,14 +51,10 @@ pub fn init_logger(level: String) {
     };
 
     let stdout = ConsoleAppender::builder()
-        .encoder(Box::new(PatternEncoder::new(
-            "{d(%Y-%m-%d %H:%M:%S %Z)(utc)} [{h({l})}] - {m}{n}",
-        )))
+        .encoder(Box::new(PatternEncoder::new(PATTERN)))
         .build();
     let requests = FileAppender::builder()
-        .encoder(Box::new(PatternEncoder::new(
-            "{d(%Y-%m-%d %H:%M:%S %Z)(utc)} [{h({l})}] - {m}{n}",
-        )))
+        .encoder(Box::new(PatternEncoder::new(PATTERN)))
         .build("./log/ua4f.log")
         .unwrap();
 
