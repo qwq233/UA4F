@@ -19,22 +19,15 @@ pub fn init_logger(level: String) {
     let stdout = ConsoleAppender::builder()
         .encoder(Box::new(PatternEncoder::new(PATTERN)))
         .build();
-    let requests = FileAppender::builder()
+    let logfile = FileAppender::builder()
         .encoder(Box::new(PatternEncoder::new(PATTERN)))
         .build("/var/log/ua4f.log")
         .unwrap();
 
     let config = Config::builder()
         .appender(Appender::builder().build("stdout", Box::new(stdout)))
-        .appender(Appender::builder().build("requests", Box::new(requests)))
-        .logger(Logger::builder().build("app::backend::db", log_level))
-        .logger(
-            Logger::builder()
-                .appender("requests")
-                .additive(false)
-                .build("app::requests", log_level),
-        )
-        .build(Root::builder().appender("stdout").build(log_level))
+        .appender(Appender::builder().build("logfile", Box::new(logfile)))
+        .build(Root::builder().appender("logfile").appender("stdout").build(log_level))
         .unwrap();
 
     log4rs::init_config(config).unwrap();
@@ -53,22 +46,15 @@ pub fn init_logger(level: String) {
     let stdout = ConsoleAppender::builder()
         .encoder(Box::new(PatternEncoder::new(PATTERN)))
         .build();
-    let requests = FileAppender::builder()
+    let logfile = FileAppender::builder()
         .encoder(Box::new(PatternEncoder::new(PATTERN)))
         .build("./log/ua4f.log")
         .unwrap();
 
     let config = Config::builder()
         .appender(Appender::builder().build("stdout", Box::new(stdout)))
-        .appender(Appender::builder().build("requests", Box::new(requests)))
-        .logger(Logger::builder().build("app::backend::db", log_level))
-        .logger(
-            Logger::builder()
-                .appender("requests")
-                .additive(false)
-                .build("app::requests", log_level),
-        )
-        .build(Root::builder().appender("stdout").build(log_level))
+        .appender(Appender::builder().build("logfile", Box::new(logfile)))
+        .build(Root::builder().appender("logfile").appender("stdout").build(log_level))
         .unwrap();
 
     log4rs::init_config(config).unwrap();
