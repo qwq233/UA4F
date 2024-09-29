@@ -14,10 +14,16 @@ pub fn init_logger(level: String) {
         _ => LevelFilter::Info,
     };
 
-    let stdout = ConsoleAppender::builder().build();
+    let stdout = ConsoleAppender::builder()
+        .encoder(Box::new(PatternEncoder::new(
+            "{d(%Y-%m-%d %H:%M:%S %Z)(utc)} [{h{l}}] - {m}{n}",
+        )))
+        .build();
     let requests = FileAppender::builder()
-        .encoder(Box::new(PatternEncoder::new("{d} - {m}{n}")))
-        .build("/var/log/ua4f.log")
+        .encoder(Box::new(PatternEncoder::new(
+            "{d(%Y-%m-%d %H:%M:%S %Z)(utc)} [{h{l}}] - {m}{n}",
+        )))
+        .build("./log/ua4f.log")
         .unwrap();
 
     let config = Config::builder()
@@ -46,9 +52,15 @@ pub fn init_logger(level: String) {
         _ => LevelFilter::Info,
     };
 
-    let stdout = ConsoleAppender::builder().build();
+    let stdout = ConsoleAppender::builder()
+        .encoder(Box::new(PatternEncoder::new(
+            "{d(%Y-%m-%d %H:%M:%S %Z)(utc)} [{h{l}}] - {m}{n}",
+        )))
+        .build();
     let requests = FileAppender::builder()
-        .encoder(Box::new(PatternEncoder::new("{d} - {m}{n}")))
+        .encoder(Box::new(PatternEncoder::new(
+            "{d(%Y-%m-%d %H:%M:%S %Z)(utc)} [{h{l}}] - {m}{n}",
+        )))
         .build("./log/ua4f.log")
         .unwrap();
 
