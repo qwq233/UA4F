@@ -44,7 +44,6 @@ pub fn modify_user_agent(buf: &mut Vec<u8>, user_agent: &String) {
         if pos + TARGET.len() >= len {
             error!("User-Agent not found, end of buffer");
             return;
-            
         }
         if buf[pos..pos + TARGET.len()] == *TARGET {
             start = pos;
@@ -76,12 +75,7 @@ pub fn modify_user_agent(buf: &mut Vec<u8>, user_agent: &String) {
     debug!("start: {}, end: {}", start, end);
     debug!("user_agent: {}", String::from_utf8_lossy(&buf[start..end]));
 
-    // MicroMessenger Client
-    if buf[start + 12..start + 12 + 21] == [77, 105, 99, 114, 111, 77, 101, 115, 115, 101, 110, 103, 101, 114, 32, 67, 108, 105, 101, 110, 116] {
-        debug!("WeChat UA found, skip");
-        return;
-    } else if buf[start + 12..start + 12 + 8] == [66, 105, 108, 105, 98, 105, 108, 105] {
-        debug!("Bilibili UA, skip");
+    if check_is_in_whitelist(buf[start + 12..end].to_vec()) {
         return;
     }
 
@@ -97,4 +91,24 @@ pub fn modify_user_agent(buf: &mut Vec<u8>, user_agent: &String) {
         "new user_agent: {}",
         String::from_utf8_lossy(&buf[start..start + 12 + user_agent.len()])
     );
+}
+
+fn check_is_in_whitelist(buf: Vec<u8>) -> bool {
+    let buf = String::from_utf8_lossy(&buf);
+    let buf = buf.to_lowercase();
+    let buf = buf.trim();
+
+    let whitelist = ["MicroMessenger Client", "bilibili"];
+    let whitelist = whitelist
+        .iter()
+        .map(|x| x.to_lowercase())
+        .collect::<Vec<String>>();
+    for i in whitelist.iter() {
+        if buf.contains(i) {
+            debug!("{} found, skip.", i);
+            return true;
+        }
+    }
+
+    false
 }
