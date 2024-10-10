@@ -47,8 +47,8 @@ define Package/ua4f/install
 
 	$(INSTALL_DIR) $(1)/usr/lib/lua/luci/controller/
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/openwrt/usr/lib/lua/luci/controller/ua4f.lua $(1)/usr/lib/lua/luci/controller/ua4f.lua
-	$(INSTALL_DIR) $(1)/usr/lib/lua/luci/model/uci/
-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/openwrt/usr/lib/lua/luci/model/uci/ua4f.lua $(1)/usr/lib/lua/luci/model/uci/ua4f.lua
+	$(INSTALL_DIR) $(1)/usr/lib/lua/luci/model/cbi/
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/openwrt/usr/lib/lua/luci/model/cbi/ua4f.lua $(1)/usr/lib/lua/luci/model/cbi/ua4f.lua
 endef
 
 $(eval $(call BuildPackage,ua4f))
