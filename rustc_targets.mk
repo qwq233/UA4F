@@ -88,6 +88,24 @@ $(warning Entering ARM)
   endif
 endif
 
+ifneq (,$(findstring muslgnueabihf,$(RUSTC_TARGET_ARCH)))
+    RUSTC_TARGET_ARCH:=$(subst muslgnueabihf,musleabihf,$(RUSTC_TARGET_ARCH))
+endif
+
+ifneq ($(RUSTC_TARGET_ARCH),mips64-unknown-linux-musl)
+    RUSTC_TARGET_ARCH:=mips64-unknown-linux-muslabi64
+endif
+
+ifneq ($(RUSTC_TARGET_ARCH),mips64el-unknown-linux-musl)
+    RUSTC_TARGET_ARCH:=mips64el-unknown-linux-muslabi64
+endif
+
+ifneq ($(RUSTC_TARGET_ARCH),riscv64-unknown-linux-musl)
+    RUSTC_TARGET_ARCH:=riscv64gc-unknown-linux-musl
+endif
+
+$(warning RUSTC_TARGET_ARCH is $(RUSTC_TARGET_ARCH))
+
 # ARM Logic
 ifeq ($(ARCH),mips64)
   RUSTC_CPU_TYPE := octeon+

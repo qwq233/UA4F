@@ -1,0 +1,30 @@
+[Unit]
+Description=Another User Agent faker, allowing users to bypass multi device detection for Campus Network via socks5 proxy.
+Documentation=https://github.com/qwq233/ua4f/
+After=network.target
+
+[Install]
+WantedBy=multi-user.target
+
+[Service]
+# Configure part
+Environment=bind_address=127.0.0.1
+Environment=port=1080
+Environment=custom_ua=Mozilla/5.0 (Window NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/555.66
+Environment=log_level=info
+
+# Prevent writes to /usr, /boot, and /etc
+User=nobody
+ProtectSystem=full
+# Prevent accessing /home, /root and /run/user
+ProtectHome=true
+
+# Allow modify log file
+ReadWritePaths=-/var/log/
+
+Type=simple
+
+ExecStart=/path/to/ua4f -b "$bind_address" -l "$log_level" -p "$port" -f "$custom_ua"
+KillSignal=SIGTERM
+Restart=on-abort
+RestartSec=5s

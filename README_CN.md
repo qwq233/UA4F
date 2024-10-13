@@ -1,113 +1,111 @@
 # UA4F
 
-[中文](./README_CN.md)
+另一个User-Agent伪装工具，允许用户通过socks5代理绕过校园网络的多设备检测。
 
-Another User Agent faker, allowing users to bypass multi device detection for Campus Network via socks5 proxy.
+受 [UA3f](https://github.com/SunBK201/UA3F) 启发
 
-Inspired by [UA3f](https://github.com/SunBK201/UA3F)
+# 特点
 
-# Features
+- 更好的性能__*大概*__
+- 完全使用 ***rust*** 编写
+- 易于从ua3f迁移
+- 兼容clash
 
-- Better performence ~~(i guess)~~
-- Fully written in ***rust***
-- Easy to migrate from ua3f
-- Compatible with clash
+# 原理
 
-# Principle
+它将首先抓取第一个数据包的前几个字节，以检查是否为http流量。如果是，它将继续抓取大约4k的流量并修改其中的用户代理。
 
-It will first grab the first few bytes of the first packet to check if it is http traffic. If so, it will continue to grab a total of about 4k of traffic and modify the User Agent in it.
+# 安装
 
-# Install
+## 使用预构建包
 
-## Using prebuilt package
+你可以在 [Release](https://github.com/qwq233/UA4F/releases) 中找到大多数常见的预构建包。
 
-You can find most common pre-built packages in [Release](https://github.com/qwq233/UA4F/releases).
+下载并安装它。然后你就可以使用它了。
 
-Download and install it. Then you are ready to use it.
+## 手动构建
 
-## Build Manually
+1. 确保你已安装了最新的 **nightly** 版本的rust工具链和与目标平台对应的目标。（例如：`x86_64-unknown-linux-musl` 适用于x86_64 OpenWrt平台，或 `x86_64-unknown-linux-gnu` 适用于x86_64 GNU/Linux）
 
-1. Make sure you have installed latest **nightly** version of rust toolchain and the target corresponding to the target platform. (E.G: `x86_64-unknown-linux-musl` for x86_64 OpenWrt platform or `x86_64-unknown-linux-gnu` for x86_64 GNU/Linux)
+2. 克隆此项目
 
-2. Clone this project
+3. 使用 `cargo` 构建
 
-3. Build with `cargo`
+4. 你已准备好使用。构建结果通常位于 `target/TARGET_ARCH/release/ua4f`
 
-4. You are ready to use. The build result is usually located in `target/TARGET_ARCH/release/ua4f`
-
-#### Example Command
+#### 示例命令
 
 ```shell
-# Assuming you are using rustup to manage rust toolchain
+# 假设你使用rustup管理rust工具链
 rustup default nightly
 rustup add x86_64-unknown-linux-musl
 
 cargo build --release --target x86_64-unknown-linux-musl
 ```
 
-## Build with OpenWrt
+## 与OpenWrt构建
 
-1. Make sure you have installed latest **nightly** version of rust toolchain and the target corresponding to the target platform and use musl as the C library. (E.G: `x86_64-unknown-linux-musl` for x86_64 platform)
+1. 确保你已安装了最新的 **nightly** 版本的rust工具链和与目标平台对应的目标，并使用musl作为C库。（例如：`x86_64-unknown-linux-musl` 适用于x86_64平台）
 
-2. Clone this project into the `package/ua4f`
+2. 将此项目克隆到 `package/ua4f`
 
-3. Enable building luci-compat and ua4f package
+3. 启用构建 luci-compat 和 ua4f 包
 
-4. You are ready to build the image or build the package separately.
+4. 你已准备好构建镜像或单独构建包。
 
-#### Example Command
+#### 示例命令
 
 ```shell
-# Assuming you are using rustup to manage rust toolchain
+# 假设你使用rustup管理rust工具链
 rustup default nightly
 rustup target add x86_64-unknown-linux-musl
 
 echo "CONFIG_PACKAGE_ua4f=y" >> .config
 make defconfig
 
-# Build this package only
+# 仅构建此包
 make package/ua4f/{clean,compile} V=s -j$(nproc)
-# or include in the image
+# 或包含在镜像中
 make -j$(nproc)
 ```
 
-# Configure
+# 配置
 
-## By Luci
+## 通过Luci
 
-It can easily configured via luci. The configuration page is located at `Service -> UA4F`
+可以通过Luci轻松配置。配置页面位于 `Service -> UA4F`
 
-## By command
+## 通过命令
 
-Assuming you are using OpenWrt. You can run these command to configure and start it as background service.
+假设你使用OpenWrt。你可以运行以下命令来配置并将其作为后台服务启动。
 
 ```shell
-# Custom UA
+# 自定义UA
 uci set ua4f.main.ua="Mozilla/5.0 (Window NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/555.66"
-# Listen port
+# 监听端口
 uci set ua4f.main.port="1080"
-# Bind address
+# 绑定地址
 uci set ua4f.main.bind="127.0.0.1"
-# Log level
+# 日志级别
 uci set ua4f.main.log_level="info"
 
-# Apply
+# 应用
 uci commit ua3f
 
-# Start service
+# 启动服务
 service ua4f enable
 service ua4f start
 ```
 
-## By systemd
+## 通过 Systemd
 
-For regular distributions (Like ***Arch Linux***), you will most likely use systemd to manage background services.
+对于常规发行版（如 ***Arch Linux***），你很可能会使用systemd来管理后台服务。
 
-In this situation, you need to write the systemd service file. But don't worry, I have provided an example file and just modify it according to your needs.
+在这种情况下，你需要编写systemd服务文件。但不用担心，我已提供了一个示例文件，只需根据你的需求进行修改。
 
-1. Create file in `/etc/systemd/system/multi-user.target.wants/ua4f.service`
+1. 在 `/etc/systemd/system/multi-user.target.wants/ua4f.service` 中创建文件
 
-2. Copy these lines below and modify it according your needs.
+2. 复制下面的这些行并根据你的需求进行修改。
 
 ```
 [Unit]
@@ -143,23 +141,23 @@ RestartSec=5s
 
 ```
 
-3. Enable and start the service
+3. 启用并启动服务
 
-#### Example Command
+#### 示例命令
 
 ```shell
-# Download the unit file (same content as above)
+# 下载Unit文件（内容与上面相同）
 curl https://github.com/qwq233/UA4F/raw/refs/heads/master/misc/ua4f.service -0 -o /etc/systemd/system/multi-user.target.wants/ua4f.service
 
-# Edit the file
+# 编辑文件
 vim /etc/systemd/system/multi-user.target.wants/ua4f.service
 
-# Enable and start the service
+# 启用并启动服务
 systemctl enable ua4f.service
 systemctl start ua4f.service
 ```
 
-# License
+# 许可
 
 **AGPL-3.0-or-later**
 
@@ -181,7 +179,7 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ```
 
-# Credit
+# 鸣谢
 
 Some luci code from [UA3F](https://github.com/SunBK201/UA3F)
 
