@@ -109,7 +109,7 @@ In this situation, you need to write the systemd service file. But don't worry, 
 
 2. Copy these lines below and modify it according your needs.
 
-```
+```ini
 [Unit]
 Description=Another User Agent faker, allowing users to bypass multi device detection for Campus Network via socks5 proxy.
 Documentation=https://github.com/qwq233/ua4f/

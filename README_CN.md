@@ -107,7 +107,7 @@ service ua4f start
 
 2. 复制下面的这些行并根据你的需求进行修改。
 
-```
+```ini
 [Unit]
 Description=Another User Agent faker, allowing users to bypass multi device detection for Campus Network via socks5 proxy.
 Documentation=https://github.com/qwq233/ua4f/
