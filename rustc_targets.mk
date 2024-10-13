@@ -92,15 +92,15 @@ ifneq (,$(findstring muslgnueabihf,$(RUSTC_TARGET_ARCH)))
     RUSTC_TARGET_ARCH:=$(subst muslgnueabihf,musleabihf,$(RUSTC_TARGET_ARCH))
 endif
 
-ifneq ($(RUSTC_TARGET_ARCH),mips64-unknown-linux-musl)
+ifeq ($(RUSTC_TARGET_ARCH),mips64-unknown-linux-musl)
     RUSTC_TARGET_ARCH:=mips64-unknown-linux-muslabi64
 endif
 
-ifneq ($(RUSTC_TARGET_ARCH),mips64el-unknown-linux-musl)
+ifeq ($(RUSTC_TARGET_ARCH),mips64el-unknown-linux-musl)
     RUSTC_TARGET_ARCH:=mips64el-unknown-linux-muslabi64
 endif
 
-ifneq ($(RUSTC_TARGET_ARCH),riscv64-unknown-linux-musl)
+ifeq ($(RUSTC_TARGET_ARCH),riscv64-unknown-linux-musl)
     RUSTC_TARGET_ARCH:=riscv64gc-unknown-linux-musl
 endif
 
