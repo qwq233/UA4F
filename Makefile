@@ -31,7 +31,7 @@ define Build/Prepare
 endef
 
 define Build/Compile
-	cd $(PKG_BUILD_DIR) && cargo rustc --target=$(RUSTC_TARGET_ARCH) --release -Zbuild-std -- -C linker=$(TARGET_CC_NOCACHE) -C ar=$(TARGET_AR)
+	cd $(PKG_BUILD_DIR) && cargo rustc --target=$(RUSTC_TARGET_ARCH) --release $(NEED_BUILD_STD) -- -C linker=$(TARGET_CC_NOCACHE) -C ar=$(TARGET_AR)
 	stat $(PKG_BUILD_DIR)/target/$(RUSTC_TARGET_ARCH)/release/ua4f
 endef
 

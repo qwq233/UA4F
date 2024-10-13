@@ -116,4 +116,17 @@ ifeq ($(ARCH),aarch64)
   RUSTFLAGS += -C link-arg=-lgcc
 endif
 
+NEED_BUILD_STD:=
+ifeq ($(RUSTC_TARGET_ARCH),mipsel-unknown-linux-musl)
+NEED_BUILD_STD:=-Zbuild-std
+else ifeq ($(RUSTC_TARGET_ARCH),riscv64gc-unknown-linux-musl)
+NEED_BUILD_STD:=-Zbuild-std
+else ifeq ($(RUSTC_TARGET_ARCH),mips-unknown-linux-musl)
+NEED_BUILD_STD:=-Zbuild-std
+else ifeq ($(RUSTC_TARGET_ARCH),mips64-unknown-linux-muslabi64)
+NEED_BUILD_STD:=-Zbuild-std
+else ifeq ($(RUSTC_TARGET_ARCH),mips64el-unknown-linux-musl)
+NEED_BUILD_STD:=-Zbuild-std
+endif
+
 $(warning RUST_TARGET_FEATURES is $(RUST_TARGET_FEATURES))
