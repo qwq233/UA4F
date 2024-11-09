@@ -23,14 +23,6 @@ pub fn init_logger(level: String, no_file_log: bool) {
         _ => LevelFilter::Info,
     };
 
-    let stdout = ConsoleAppender::builder()
-        .encoder(Box::new(PatternEncoder::new(PATTERN)))
-        .build();
-    let logfile = FileAppender::builder()
-        .encoder(Box::new(PatternEncoder::new(PATTERN)))
-        .build(LOG_FILE_PATH)
-        .unwrap();
-
     if !no_file_log {
         let file = match File::create(LOG_FILE_PATH) {
             Ok(file) => file,
@@ -42,6 +34,14 @@ pub fn init_logger(level: String, no_file_log: bool) {
             panic!("Unable to write log to log file. This file is read only.")
         }
     }
+
+    let stdout = ConsoleAppender::builder()
+        .encoder(Box::new(PatternEncoder::new(PATTERN)))
+        .build();
+    let logfile = FileAppender::builder()
+        .encoder(Box::new(PatternEncoder::new(PATTERN)))
+        .build(LOG_FILE_PATH)
+        .unwrap();
 
     let root = if no_file_log {
         Root::builder().appender("stdout").build(log_level)
