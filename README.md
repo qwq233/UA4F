@@ -6,6 +6,9 @@ Another User Agent faker, allowing users to bypass multi device detection for Ca
 
 Inspired by [UA3f](https://github.com/SunBK201/UA3F)
 
+> [!WARNING]
+> This is a toy project. No ANY guarantees are made regarding performance or stability.
+
 # Features
 
 - Better performence ~~(i guess)~~
