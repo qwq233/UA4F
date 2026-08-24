@@ -95,7 +95,7 @@ uci set ua4f.main.bind="127.0.0.1"
 uci set ua4f.main.log_level="info"
 
 # Apply
-uci commit ua3f
+uci commit ua4f
 
 # Start service
 service ua4f enable
